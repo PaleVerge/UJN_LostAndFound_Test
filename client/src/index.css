@@ -1,0 +1,338 @@
+@import "tailwindcss";
+
+/* ========== 主题变量 ========== */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.6);
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-bg-hover: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+  --input-bg: rgba(255, 255, 255, 0.6);
+  --nav-bg: rgba(15, 23, 42, 0.8);
+  --tag-lost-bg: #FFE4E6;
+  --tag-lost-text: #E11D48;
+  --tag-found-bg: #FFF7ED;
+  --tag-found-text: #F97316;
+  --tag-closed-bg: #F1F5F9;
+  --tag-closed-text: #64748B;
+  --mesh-color-1: #E0F2FE;
+  --mesh-color-2: #FDF2F8;
+  --mesh-color-3: #FEFCE8;
+  --mesh-color-4: #BAE6FD;
+  --mesh-color-5: #FCE7F3;
+  --mesh-color-6: #FEF3C7;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --text-primary: #E2E8F0;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(30, 41, 59, 0.55);
+  --card-bg-hover: rgba(30, 41, 59, 0.75);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --input-bg: rgba(30, 41, 59, 0.5);
+  --nav-bg: rgba(15, 23, 42, 0.7);
+  --tag-lost-bg: rgba(251, 113, 133, 0.2);
+  --tag-lost-text: #FDA4AF;
+  --tag-found-bg: rgba(249, 115, 22, 0.2);
+  --tag-found-text: #FDBA74;
+  --tag-closed-bg: rgba(148, 163, 184, 0.15);
+  --tag-closed-text: #94A3B8;
+  --mesh-color-1: #1E1B4B;
+  --mesh-color-2: #312E81;
+  --mesh-color-3: #4338CA;
+  --mesh-color-4: #1E1B4B;
+  --mesh-color-5: #312E81;
+  --mesh-color-6: #0F172A;
+}
+
+/* ========== 全局基础 ========== */
+* {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 0;
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.05em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== 弥散呼吸背景 ========== */
+.mesh-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.mesh-bg::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background:
+    radial-gradient(ellipse 40% 50% at 20% 30%, var(--mesh-color-1), transparent 60%),
+    radial-gradient(ellipse 35% 45% at 75% 25%, var(--mesh-color-2), transparent 60%),
+    radial-gradient(ellipse 30% 40% at 50% 70%, var(--mesh-color-3), transparent 60%),
+    radial-gradient(ellipse 35% 35% at 85% 65%, var(--mesh-color-4), transparent 60%),
+    radial-gradient(ellipse 25% 35% at 15% 75%, var(--mesh-color-5), transparent 55%),
+    radial-gradient(ellipse 30% 30% at 55% 15%, var(--mesh-color-6), transparent 55%);
+  animation: meshBreath 15s ease-in-out infinite alternate;
+}
+
+@keyframes meshBreath {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-2%, 1%) scale(1.05);
+  }
+  50% {
+    transform: translate(1%, -2%) scale(0.97);
+  }
+  75% {
+    transform: translate(-1%, -1%) scale(1.03);
+  }
+  100% {
+    transform: translate(2%, 2%) scale(1);
+  }
+}
+
+/* ========== 玻璃拟态卡片 ========== */
+.glass-card {
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid var(--card-border) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--card-shadow) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: hidden;
+}
+
+.glass-card:hover {
+  background: var(--card-bg-hover) !important;
+  box-shadow: var(--card-shadow-hover) !important;
+  transform: translateY(-8px) scale(1.02);
+}
+
+.glass-input {
+  background: var(--input-bg) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px !important;
+  border-color: var(--border-color) !important;
+}
+
+/* ========== 导航栏玻璃（始终深色） ========== */
+.glass-nav {
+  background: rgba(15, 23, 42, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 导航栏内的白色文字与控件 */
+.glass-nav a,
+.glass-nav .ant-btn-default,
+.glass-nav .ant-btn-variant-outlined:not(.ant-btn-color-primary) {
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.glass-nav .ant-btn-default:hover,
+.glass-nav .ant-btn-variant-outlined:not(.ant-btn-color-primary):hover {
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.glass-nav .ant-input-affix-wrapper {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.glass-nav .ant-input-affix-wrapper .ant-input {
+  color: #FFFFFF !important;
+}
+
+.glass-nav .ant-input-affix-wrapper .ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.glass-nav .ant-input-prefix {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.glass-nav .ant-btn-color-primary {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* ========== 渐变阴影分割线 ========== */
+.column-divider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.08), transparent);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .column-divider {
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.08), transparent);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.03);
+}
+
+/* ========== 胶囊按钮 ========== */
+.pill-btn {
+  border-radius: 999px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.pill-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.pill-btn:hover::after {
+  transform: translateX(100%);
+}
+
+/* ========== 暂无图片渐变占位 ========== */
+.img-placeholder {
+  width: 100%;
+  height: 180px;
+  border-radius: 24px 24px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 14px;
+  background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+}
+
+[data-theme="dark"] .img-placeholder {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: #64748b;
+}
+
+/* ========== 多巴胺标签 ========== */
+.tag-lost {
+  background: var(--tag-lost-bg) !important;
+  color: var(--tag-lost-text) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 2px 12px !important;
+  font-weight: 600 !important;
+}
+
+.tag-found {
+  background: var(--tag-found-bg) !important;
+  color: var(--tag-found-text) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 2px 12px !important;
+  font-weight: 600 !important;
+}
+
+.tag-closed {
+  background: var(--tag-closed-bg) !important;
+  color: var(--tag-closed-text) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 2px 12px !important;
+  font-weight: 600 !important;
+}
+
+/* ========== 图片 hover 效果 ========== */
+.card-img-wrapper {
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+}
+
+.card-img-wrapper img {
+  filter: grayscale(15%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-img-wrapper:hover img {
+  filter: grayscale(0);
+  transform: scale(1.1);
+}
+
+/* ========== 空状态动效 ========== */
+@keyframes floatAway {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  25% { transform: translateY(-12px) rotate(1deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+  75% { transform: translateY(-16px) rotate(-1deg); }
+}
+
+@keyframes tailWiggle {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.empty-float {
+  animation: floatAway 4s ease-in-out infinite;
+}
+
+/* ========== 暗黑切换按钮 ========== */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+}
