@@ -56,9 +56,10 @@ UJN - Lost & Found/
 
 > 1. 安装环境：
 > MySQL 8.0
+> 
 > Node.js
 >
-> 2. 配置数据库:
+> 3. 配置数据库:
 > 登录 MySQL：
 > ```powershell
 > mysql -u root -p
@@ -96,6 +97,7 @@ UJN - Lost & Found/
 > npm run dev
 > ```
 > 后端默认运行在 http://localhost:3001
+> 
 > 5. 安装并启动前端
 > 另开一个终端，从项目根目录执行
 > ```powershell
